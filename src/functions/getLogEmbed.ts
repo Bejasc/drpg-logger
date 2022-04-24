@@ -16,5 +16,7 @@ export default function (type: ILogType, title: string, content: string, message
 		embed.addField("\u200b", `[Go to](${logUrl})`);
 	}
 
+	embed.setFooter({text:"Powered by DRPG Logger", iconURL:"https://cdn.discordapp.com/attachments/964178424258236466/967817981117739088/drpg_shield.png" })
+
 	return embed;
 }
