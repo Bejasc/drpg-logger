@@ -6,21 +6,21 @@ import logToConsole from "./functions/logToConsole";
 import ILoggerOptions from "./types/ILoggerOptions";
 import { ILogType } from "./types/ILogType";
 
-export class DrpgLogger {
+export class Logger {
 	/**The client used for sending messages */
-	private client: Client;
+	private static client: Client;
 
 	/**Options for the Logger */
-	private options: ILoggerOptions;
+	private static options: ILoggerOptions;
 
 	constructor(c: Client, o: ILoggerOptions) {
-		this.client = c;
-		this.options = o;
+		Logger.client = c;
+		Logger.options = o;
 
-		if (!this.options.allowEmbedLevel) this.options.allowEmbedLevel = 30;
-		if (!this.options.allowLogLevel) this.options.allowLogLevel = 10;
-		if (!this.options.dateDisplayTimezone) this.options.dateDisplayTimezone = "0";
-		if (!this.options.dateFormat) this.options.dateFormat = "YYYY-MM-DD HH:mm:ss";
+		if (!Logger.options.allowEmbedLevel) Logger.options.allowEmbedLevel = 30;
+		if (!Logger.options.allowLogLevel) Logger.options.allowLogLevel = 10;
+		if (!Logger.options.dateDisplayTimezone) Logger.options.dateDisplayTimezone = "0";
+		if (!Logger.options.dateFormat) Logger.options.dateFormat = "YYYY-MM-DD HH:mm:ss";
 	}
 
 	/**
@@ -30,8 +30,8 @@ export class DrpgLogger {
 	 * @param message The message, if any. The Embed will offer a link to this message for navigation
 	 * @returns The message embed that was sent.
 	 */
-	public trace(content: string, title?: string, message?: Message): MessageEmbed {
-		return this.log(LogLevel.Trace, content, title, message);
+	public static trace(content: string, title?: string, message?: Message): MessageEmbed {
+		return Logger.log(LogLevel.Trace, content, title, message);
 	}
 
 	/**
@@ -41,8 +41,8 @@ export class DrpgLogger {
 	 * @param message The message, if any. The Embed will offer a link to this message for navigation
 	 * @returns The message embed that was sent.
 	 */
-	public debug(content: string, title?: string, message?: Message): MessageEmbed {
-		return this.log(LogLevel.Debug, content, title, message);
+	public static debug(content: string, title?: string, message?: Message): MessageEmbed {
+		return Logger.log(LogLevel.Debug, content, title, message);
 	}
 
 	/**
@@ -52,8 +52,8 @@ export class DrpgLogger {
 	 * @param message The message, if any. The Embed will offer a link to this message for navigation
 	 * @returns The message embed that was sent.
 	 */
-	public info(content: string, title?: string, message?: Message): MessageEmbed {
-		return this.log(LogLevel.Info, content, title, message);
+	public static info(content: string, title?: string, message?: Message): MessageEmbed {
+		return Logger.log(LogLevel.Info, content, title, message);
 	}
 
 	/**
@@ -63,8 +63,8 @@ export class DrpgLogger {
 	 * @param message The message, if any. The Embed will offer a link to this message for navigation
 	 * @returns The message embed that was sent.
 	 */
-	public warn(content: string, title?: string, message?: Message): MessageEmbed {
-		return this.log(LogLevel.Warn, content, title, message);
+	public static warn(content: string, title?: string, message?: Message): MessageEmbed {
+		return Logger.log(LogLevel.Warn, content, title, message);
 	}
 
 	/**
@@ -74,8 +74,8 @@ export class DrpgLogger {
 	 * @param message The message, if any. The Embed will offer a link to this message for navigation
 	 * @returns The message embed that was sent.
 	 */
-	public error(content: string, title?: string, message?: Message): MessageEmbed {
-		return this.log(LogLevel.Error, content, title, message);
+	public static error(content: string, title?: string, message?: Message): MessageEmbed {
+		return Logger.log(LogLevel.Error, content, title, message);
 	}
 
 	/**
@@ -85,8 +85,8 @@ export class DrpgLogger {
 	 * @param message The message, if any. The Embed will offer a link to this message for navigation
 	 * @returns The message embed that was sent.
 	 */
-	public fatal(content: string, title?: string, message?: Message): MessageEmbed {
-		return this.log(LogLevel.Fatal, content, title, message);
+	public static fatal(content: string, title?: string, message?: Message): MessageEmbed {
+		return Logger.log(LogLevel.Fatal, content, title, message);
 	}
 
 	/**
@@ -97,28 +97,11 @@ export class DrpgLogger {
 	 * @param message The message, if any. The Embed will offer a link to this message for navigation
 	 * @returns The message embed that was sent.
 	 */
-	public custom(logLevel: ILogType, content: string, title: string, message: Message): MessageEmbed {
-		const embed = this.log(logLevel, content, title, message);
+	public static custom(logLevel: ILogType, content: string, title: string, message: Message): MessageEmbed {
+		const embed = Logger.log(logLevel, content, title, message);
 		return embed;
 	}
 	//TODO Find a way to tidy all of these up.. some kind of run command for any log type?
-
-	log(type: ILogType, content: string, title?: string, message?: Message): MessageEmbed {
-		const consoleLogLevel = this.options.allowLogLevel;
-		if (type.priority >= consoleLogLevel) logToConsole({ type, content, title, options: this.options, client: this.client });
-
-		const logEmbed = getLogEmbed(type, title, content, message);
-
-		const embedLogLevel = this.options.allowEmbedLevel;
-		if (type.priority >= embedLogLevel) {
-			const logChannelId = type.logChannel ?? this.options.defaultLogChannel;
-
-			const logChannel = this.client.channels.cache.find((c) => c.id == logChannelId) as TextChannel;
-			logChannel?.send({ embeds: [logEmbed] });
-		}
-
-		return logEmbed;
-	}
 
 	/**
 	 * Send a Log, but also reply to the original message with the embed that would be logged. Handy for cases where users must also see the output.
@@ -128,8 +111,26 @@ export class DrpgLogger {
 	 * @param message The message, if any. The Embed will offer a link to this message for navigation. Required for reply.
 	 * @returns Message that was sent in response.
 	 */
-	public async respond(logLevel: ILogType, content: string, title: string, message: Message): Promise<Message> {
-		const embed = this.log(logLevel, content, title, message);
+	public static async respond(logLevel: ILogType, content: string, title: string, message: Message): Promise<Message> {
+		const embed = Logger.log(logLevel, content, title, message);
 		return message.reply({ embeds: [embed] });
+	}
+
+	
+	static log(type: ILogType, content: string, title?: string, message?: Message): MessageEmbed {
+		const consoleLogLevel = Logger.options.allowLogLevel;
+		if (type.priority >= consoleLogLevel) logToConsole({ type, content, title, options: Logger.options, client: Logger.client });
+
+		const logEmbed = getLogEmbed(type, title, content, message);
+
+		const embedLogLevel = Logger.options.allowEmbedLevel;
+		if (type.priority >= embedLogLevel) {
+			const logChannelId = type.logChannel ?? Logger.options.defaultLogChannel;
+
+			const logChannel = Logger.client.channels.cache.find((c) => c.id == logChannelId) as TextChannel;
+			logChannel?.send({ embeds: [logEmbed] });
+		}
+
+		return logEmbed;
 	}
 }
