@@ -122,19 +122,25 @@ export class Logger {
 
 	
 	static log(type: ILogType, content: string, title?: string, message?: Message): MessageEmbed {
-		const consoleLogLevel = Logger.options.allowLogLevel;
-		if (type.priority >= consoleLogLevel) logToConsole({ type, content, title, options: Logger.options, client: Logger.client });
+		try{
 
-		const logEmbed = getLogEmbed(type, title, content, message);
-
-		const embedLogLevel = Logger.options.allowEmbedLevel;
-		if (type.priority >= embedLogLevel) {
-			const logChannelId = type.logChannel ?? Logger.options.defaultLogChannel;
-
-			const logChannel = Logger.client.channels.cache.find((c) => c.id == logChannelId) as TextChannel;
-			logChannel?.send({ embeds: [logEmbed] });
+			const consoleLogLevel = Logger.options.allowLogLevel;
+			if (type.priority >= consoleLogLevel) logToConsole({ type, content, title, options: Logger.options, client: Logger.client });
+			
+			const logEmbed = getLogEmbed(type, title, content, message);
+			
+			const embedLogLevel = Logger.options.allowEmbedLevel;
+			if (type.priority >= embedLogLevel) {
+				const logChannelId = type.logChannel ?? Logger.options.defaultLogChannel;
+				
+				const logChannel = Logger.client.channels.cache.find((c) => c.id == logChannelId) as TextChannel;
+				logChannel?.send({ embeds: [logEmbed] });
+			}
+			
+			return logEmbed;
+		} catch(err) {
+			console.error(err);
+			console.log(`${type.title} : ${title} - ${content}`);
 		}
-
-		return logEmbed;
 	}
 }

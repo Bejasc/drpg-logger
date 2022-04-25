@@ -24,29 +24,35 @@ function getTimestamp(options: ILoggerOptions): string {
 }
 
 function parseMentions(input: string, client: Client): string {
-	const regExp = new RegExp(/<(@)[0-9]{17,}>/g);
-	return input.replace(regExp, (val: string) => {
-		try {
-			const id = val.substring(2, val.length - 1);
-			const user = client.users.cache.find((x) => x.id == id);
-			return bold(`@${user.username}[${cyan(user.id)}]`);
-		} catch (err) {
-			console.log(err);
-			return val;
-		}
-	});
+	if(input){
+		const regExp = new RegExp(/<(@)[0-9]{17,}>/g);
+		return input.replace(regExp, (val: string) => {
+			try {
+				const id = val.substring(2, val.length - 1);
+				const user = client.users.cache.find((x) => x.id == id);
+				return bold(`@${user.username}[${cyan(user.id)}]`);
+			} catch (err) {
+				console.log(err);
+				return val;
+			}
+		});
+	} else {
+		return input;
+	}
 }
 
 function parseChannels(input: string, client: Client): string {
-	const regExp = new RegExp(/<(#)[0-9]{17,}>/g);
-	return input.replace(regExp, (val) => {
-		try {
-			const id = val.substring(2, val.length - 1);
-			const channel = client.channels.cache.find((x) => x.id == id) as TextChannel;
-			return bold(`#${channel.name}[${yellow(channel.id)}]`);
-		} catch (err) {
-			console.log(err);
-			return val;
-		}
-	});
+	if(input){
+		const regExp = new RegExp(/<(#)[0-9]{17,}>/g);
+		return input.replace(regExp, (val) => {
+			try {
+				const id = val.substring(2, val.length - 1);
+				const channel = client.channels.cache.find((x) => x.id == id) as TextChannel;
+				return bold(`#${channel.name}[${yellow(channel.id)}]`);
+			} catch (err) {
+				console.log(err);
+				return val;
+			}
+		});
+	}
 }
