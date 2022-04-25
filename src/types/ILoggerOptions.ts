@@ -9,4 +9,6 @@ export default interface ILoggerOptions {
 	dateDisplayTimezone?: string;
 	/**Optional. Defaults to `YYYY-MM-DD HH:mm:ss`. Will be included in all console logs.*/
 	dateFormat?: string;
+	/**Optional. Defaults to `true`. Whether or not the 'Powered by DRPG' footer will show on Logger.respond */
+	includeFooterOnRespond?:boolean
 }

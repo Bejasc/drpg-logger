@@ -21,6 +21,7 @@ export class Logger {
 		if (!Logger.options.allowLogLevel) Logger.options.allowLogLevel = 10;
 		if (!Logger.options.dateDisplayTimezone) Logger.options.dateDisplayTimezone = "0";
 		if (!Logger.options.dateFormat) Logger.options.dateFormat = "YYYY-MM-DD HH:mm:ss";
+		if(!Logger.options.includeFooterOnRespond) Logger.options.includeFooterOnRespond = true;
 	}
 
 	/**
@@ -97,11 +98,10 @@ export class Logger {
 	 * @param message The message, if any. The Embed will offer a link to this message for navigation
 	 * @returns The message embed that was sent.
 	 */
-	public static custom(logLevel: ILogType, content: string, title: string, message: Message): MessageEmbed {
+	public static custom(logLevel: ILogType, content: string, title: string, message: Message, ): MessageEmbed {
 		const embed = Logger.log(logLevel, content, title, message);
 		return embed;
 	}
-	//TODO Find a way to tidy all of these up.. some kind of run command for any log type?
 
 	/**
 	 * Send a Log, but also reply to the original message with the embed that would be logged. Handy for cases where users must also see the output.
@@ -113,6 +113,10 @@ export class Logger {
 	 */
 	public static async respond(logLevel: ILogType, content: string, title: string, message: Message): Promise<Message> {
 		const embed = Logger.log(logLevel, content, title, message);
+
+		embed.footer = null;
+		embed.fields = null;
+
 		return message.reply({ embeds: [embed] });
 	}
 
