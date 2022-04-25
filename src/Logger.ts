@@ -98,7 +98,7 @@ export class Logger {
 	 * @param message The message, if any. The Embed will offer a link to this message for navigation
 	 * @returns The message embed that was sent.
 	 */
-	public static custom(logLevel: ILogType, content: string, title: string, message: Message, ): MessageEmbed {
+	public static custom(logLevel: ILogType, content: string, title: string, message?: Message, ): MessageEmbed {
 		const embed = Logger.log(logLevel, content, title, message);
 		return embed;
 	}
