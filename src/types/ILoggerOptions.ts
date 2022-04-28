@@ -1,4 +1,7 @@
+import { Client } from "discord.js";
+
 export default interface ILoggerOptions {
+	client?:Client
 	/**Required. The Channel that will be used for sending Log embeds.*/
 	defaultLogChannel: string;
 	/**Optional. Defaults to `30`. Each LogType has a Priority. If a new log has _less_ than this level of priority, the Embed will not be sent.*/

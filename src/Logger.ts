@@ -8,13 +8,11 @@ import { ILogType } from "./types/ILogType";
 
 export class Logger {
 	/**The client used for sending messages */
-	private static client: Client;
 
 	/**Options for the Logger */
 	private static options: ILoggerOptions;
 
-	constructor(c: Client, o: ILoggerOptions) {
-		Logger.client = c;
+	constructor(o: ILoggerOptions) {
 		Logger.options = o;
 
 		if (!Logger.options.allowEmbedLevel) Logger.options.allowEmbedLevel = 30;
@@ -125,19 +123,22 @@ export class Logger {
 		try{
 
 			const consoleLogLevel = Logger.options.allowLogLevel;
-			if (type.priority >= consoleLogLevel) logToConsole({ type, content, title, options: Logger.options, client: Logger.client });
+			if (type.priority >= consoleLogLevel) logToConsole({ type, content, title, options: Logger.options});
 			
-			const logEmbed = getLogEmbed(type, title, content, message);
-			
-			const embedLogLevel = Logger.options.allowEmbedLevel;
-			if (type.priority >= embedLogLevel) {
-				const logChannelId = type.logChannel ?? Logger.options.defaultLogChannel;
+
+			if(this.options.client.options){
+				const logEmbed = getLogEmbed(type, title, content, message);
 				
-				const logChannel = Logger.client.channels.cache.find((c) => c.id == logChannelId) as TextChannel;
-				logChannel?.send({ embeds: [logEmbed] });
+				const embedLogLevel = Logger.options.allowEmbedLevel;
+				if (type.priority >= embedLogLevel) {
+					const logChannelId = type.logChannel ?? Logger.options.defaultLogChannel;
+					
+					const logChannel = this.options.client.channels.cache.find((c) => c.id == logChannelId) as TextChannel;
+					logChannel?.send({ embeds: [logEmbed] });
+				}
+				
+				return logEmbed;
 			}
-			
-			return logEmbed;
 		} catch(err) {
 			console.error(err);
 			console.log(`${type.title} : ${title} - ${content}`);
