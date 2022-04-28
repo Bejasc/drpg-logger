@@ -10,7 +10,12 @@ export class Logger {
 	/**The client used for sending messages */
 
 	/**Options for the Logger */
-	private static options: ILoggerOptions;
+	public static options: ILoggerOptions = {
+		allowEmbedLevel:30,
+		allowLogLevel:0,
+		dateDisplayTimezone: "0",
+		dateFormat: "YYYY-MM-DD HH:mm:ss"
+	}
 
 	constructor(o: ILoggerOptions) {
 		Logger.options = o;
@@ -126,14 +131,14 @@ export class Logger {
 			if (type.priority >= consoleLogLevel) logToConsole({ type, content, title, options: Logger.options});
 			
 
-			if(this.options.client.options){
+			if(Logger.options.client){
 				const logEmbed = getLogEmbed(type, title, content, message);
 				
 				const embedLogLevel = Logger.options.allowEmbedLevel;
 				if (type.priority >= embedLogLevel) {
 					const logChannelId = type.logChannel ?? Logger.options.defaultLogChannel;
 					
-					const logChannel = this.options.client.channels.cache.find((c) => c.id == logChannelId) as TextChannel;
+					const logChannel = Logger.options.client.channels.cache.find((c) => c.id == logChannelId) as TextChannel;
 					logChannel?.send({ embeds: [logEmbed] });
 				}
 				
