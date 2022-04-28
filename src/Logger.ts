@@ -1,6 +1,5 @@
 import { Client, Message, MessageEmbed, TextChannel } from "discord.js";
 import { LogLevel } from "./config/DefaultLogTypes";
-import DrpgColors from "./config/DrpgColors";
 import getLogEmbed from "./functions/getLogEmbed";
 import logToConsole from "./functions/logToConsole";
 import ILoggerOptions from "./types/ILoggerOptions";

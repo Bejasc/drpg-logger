@@ -1,4 +1,4 @@
-import DrpgColors from "./DrpgColors";
+import DrpgColors from "@drpgdev/drpg-utils/dist/DrpgColors";
 import { bgRed, cyan, gray, magenta, red, yellow } from "colorette";
 import { ILogType } from "../types/ILogType";
 

@@ -3,7 +3,7 @@
 	"publishConfig": {
 		"registry": "https://npm.pkg.github.com/"
 	},
-	"version": "1.2.1",
+	"version": "1.2.2",
 	"description": "Pretty logging for Discord.JS",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
@@ -12,7 +12,16 @@
 		"dist",
 		"!dist/*.tsbuildinfo"
 	],
-	"keywords": ["discord","drpg","logger","logging","bot","console","colorette","bejasc"],
+	"keywords": [
+		"discord",
+		"drpg",
+		"logger",
+		"logging",
+		"bot",
+		"console",
+		"colorette",
+		"bejasc"
+	],
 	"scripts": {
 		"build": "tsc",
 		"prepare": "npm run build"
@@ -20,6 +29,7 @@
 	"author": "Bejasc",
 	"license": "ISC",
 	"dependencies": {
+		"@drpgdev/drpg-utils": "github:drpgdev/drpg-utils",
 		"ansi-parser": "^3.2.10",
 		"colorette": "^2.0.16",
 		"discord.js": "^13.6.0",
