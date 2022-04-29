@@ -1,7 +1,7 @@
 {
 	"name": "@drpgdev/drpg-logger",
 	"publishConfig": {
-		"registry": "https://npm.pkg.github.com/"
+		"registry": "https://npm.pkg.github.com/@drpgdev"
 	},
 	"version": "1.2.5",
 	"description": "Pretty logging for Discord.JS",
