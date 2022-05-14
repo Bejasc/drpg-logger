@@ -5,8 +5,14 @@ import { ILogType } from "../types/ILogType";
 export default function (type: ILogType, title: string, content: string, message: Message): MessageEmbed {
 	const embed = new MessageEmbed();
 
-	embed.setTitle(`${type.emoji + " " ?? ""}${type.title} ${title ? `- ${title}` : ""}`);
+	if(!title) title = "";
+	if(type.title) title = `${type.title} - ${title}`;
+	if(type.emoji) title = `${type.emoji} ${title}`
+
+	embed.setTitle(title);
 	embed.setDescription(AnsiParser.removeAnsi(content));
+
+	if(type.thumbnail) embed.setThumbnail(type.thumbnail)
 
 	const color = type.embedColor;
 	embed.setColor(color as ColorResolvable);
