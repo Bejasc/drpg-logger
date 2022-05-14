@@ -113,7 +113,7 @@ export class Logger {
 	 * @param message The message, if any. The Embed will offer a link to this message for navigation. Required for reply.
 	 * @returns Message that was sent in response.
 	 */
-	public static async respond(logLevel: ILogType, content: string, message: Message, title?: string): Promise<Message> {
+	public static async respond(logLevel: ILogType, content: string,title: string, message: Message): Promise<Message> {
 		const embed = Logger.log(logLevel, content, title, message);
 
 		embed.footer = null;
