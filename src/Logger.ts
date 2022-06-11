@@ -129,7 +129,7 @@ export class Logger {
 			if (type.priority >= consoleLogLevel) logToConsole({ type, content, title, options: Logger.options });
 
 			if (Logger.options.client) {
-				const logEmbed = getLogEmbed(type, title, content, message);
+				const logEmbed = getLogEmbed(type, title, content, message, embedOptions);
 
 				const embedLogLevel = Logger.options.allowEmbedLevel;
 				if (type.priority >= embedLogLevel) {
