@@ -139,14 +139,6 @@ export class Logger {
 					logChannel?.send({ embeds: [logEmbed] });
 				}
 
-				try {
-					if (embedOptions?.image) logEmbed.setImage(embedOptions.image);
-					if (embedOptions?.thumbnail) logEmbed.setThumbnail(embedOptions.thumbnail);
-					if (embedOptions?.fields) logEmbed.addFields(embedOptions.fields);
-				} catch (ex) {
-					this.error(`Error generating embed using provided embedOptions object.\n${ex}`, title ?? "Error generating Log");
-				}
-
 				return logEmbed;
 			}
 		} catch (err) {
