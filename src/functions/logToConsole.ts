@@ -4,15 +4,15 @@ import moment from "moment";
 import ILoggerOptions from "../types/ILoggerOptions";
 import { ILogType } from "../types/ILogType";
 
-export default function ({ type, content, title, options, client }: { client?: Client; type: ILogType; content: string; title?: string; options: ILoggerOptions }): void {
-	if (client) {
-		content = parseMentions(content, client);
-		content = parseChannels(content, client);
+export default function ({ type, content, title, options }: { type: ILogType; content: string; title?: string; options: ILoggerOptions }): void {
+	if (options.client) {
+		content = parseMentions(content, options.client);
+		content = parseChannels(content, options.client);
 	}
 
 	if (title) content = bold(title + ": ") + content;
 
-	content = `${greenBright("%T")} - ${greenBright(`${type.logTag ?? "CUSTOM"}`)}` + " - " + content;
+	content = (type.logTag ?? `${greenBright("%T")} - ${greenBright("CUSTOM")}`) + " - " + content;
 
 	content = content.replace("%T", getTimestamp(options));
 

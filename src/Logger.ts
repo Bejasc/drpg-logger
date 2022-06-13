@@ -6,7 +6,7 @@ import IEmbedOptions from "./types/IEmbedOptions";
 import ILoggerOptions from "./types/ILoggerOptions";
 import { ILogType } from "./types/ILogType";
 
-export class Logger {
+export abstract class Logger {
 	/**Options for the Logger */
 	public static options: ILoggerOptions = {
 		allowEmbedLevel: 30,
@@ -15,14 +15,16 @@ export class Logger {
 		dateFormat: "YYYY-MM-DD HH:mm:ss",
 	};
 
-	constructor(o: ILoggerOptions) {
-		Logger.options = o;
+	public static setOptions(o: ILoggerOptions) {
+		this.options = o;
 
-		if (!Logger.options.allowEmbedLevel) Logger.options.allowEmbedLevel = 30;
-		if (!Logger.options.allowLogLevel) Logger.options.allowLogLevel = 10;
-		if (!Logger.options.dateDisplayTimezone) Logger.options.dateDisplayTimezone = "0";
-		if (!Logger.options.dateFormat) Logger.options.dateFormat = "YYYY-MM-DD HH:mm:ss";
-		if (!Logger.options.includeFooterOnRespond) Logger.options.includeFooterOnRespond = true;
+		console.log(o.client.user.username ?? "fuqknows");
+
+		if (o.allowEmbedLevel == undefined) this.options.allowEmbedLevel = 30;
+		if (o.allowLogLevel == undefined) this.options.allowLogLevel = 10;
+		if (o.dateDisplayTimezone == undefined) this.options.dateDisplayTimezone = "0";
+		if (o.dateFormat == undefined) this.options.dateFormat = "YYYY-MM-DD HH:mm:ss";
+		if (o.includeFooterOnRespond == undefined) this.options.includeFooterOnRespond = true;
 	}
 
 	/**
@@ -127,7 +129,9 @@ export class Logger {
 			if (type.priority >= consoleLogLevel) logToConsole({ type, content, title, options: Logger.options });
 
 			if (Logger.options.client) {
+				//logEmbed has extra details (like Footer and GoTo link) - logResponse will omit these details
 				const logEmbed = getLogEmbed(type, title, content, message, embedOptions);
+				const logResponse = getLogEmbed(type, title, content, message, embedOptions);
 
 				const embedLogLevel = Logger.options.allowEmbedLevel;
 
@@ -150,7 +154,7 @@ export class Logger {
 					logChannel?.send({ embeds: [logEmbed] });
 				}
 
-				return logEmbed;
+				return logResponse;
 			}
 		} catch (err) {
 			console.error(err);
