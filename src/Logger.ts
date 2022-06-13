@@ -7,8 +7,6 @@ import ILoggerOptions from "./types/ILoggerOptions";
 import { ILogType } from "./types/ILogType";
 
 export class Logger {
-	/**The client used for sending messages */
-
 	/**Options for the Logger */
 	public static options: ILoggerOptions = {
 		allowEmbedLevel: 30,
@@ -132,10 +130,23 @@ export class Logger {
 				const logEmbed = getLogEmbed(type, title, content, message, embedOptions);
 
 				const embedLogLevel = Logger.options.allowEmbedLevel;
+
 				if (type.priority >= embedLogLevel) {
 					const logChannelId = type.logChannel ?? Logger.options.defaultLogChannel;
 
 					const logChannel = Logger.options.client.channels.cache.find((c) => c.id == logChannelId) as TextChannel;
+
+					if (message) {
+						const logUrl = message.url;
+						logEmbed.addField("\u200b", `[Go to](${logUrl})`);
+					}
+
+					if (Logger.options.includeFooterOnRespond)
+						logEmbed.setFooter({
+							text: "Powered by DRPG Logger",
+							iconURL: "https://cdn.discordapp.com/attachments/964178424258236466/967817981117739088/drpg_shield.png",
+						});
+
 					logChannel?.send({ embeds: [logEmbed] });
 				}
 

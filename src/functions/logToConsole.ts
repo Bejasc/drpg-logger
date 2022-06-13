@@ -5,14 +5,14 @@ import ILoggerOptions from "../types/ILoggerOptions";
 import { ILogType } from "../types/ILogType";
 
 export default function ({ type, content, title, options, client }: { client?: Client; type: ILogType; content: string; title?: string; options: ILoggerOptions }): void {
-	if(client){
+	if (client) {
 		content = parseMentions(content, client);
 		content = parseChannels(content, client);
 	}
 
 	if (title) content = bold(title + ": ") + content;
 
-	content = (type.logTag ?? `${greenBright("%T")} - ${greenBright("CUSTOM")}`) + " - " + content;
+	content = `${greenBright("%T")} - ${greenBright(`${type.logTag ?? "CUSTOM"}`)}` + " - " + content;
 
 	content = content.replace("%T", getTimestamp(options));
 
@@ -26,7 +26,7 @@ function getTimestamp(options: ILoggerOptions): string {
 }
 
 function parseMentions(input: string, client: Client): string {
-	if(input){
+	if (input) {
 		const regExp = new RegExp(/<(@)[0-9]{17,}>/g);
 		return input.replace(regExp, (val: string) => {
 			try {
@@ -44,7 +44,7 @@ function parseMentions(input: string, client: Client): string {
 }
 
 function parseChannels(input: string, client: Client): string {
-	if(input){
+	if (input) {
 		const regExp = new RegExp(/<(#)[0-9]{17,}>/g);
 		return input.replace(regExp, (val) => {
 			try {

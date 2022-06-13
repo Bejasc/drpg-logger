@@ -6,4 +6,9 @@ export default interface IEmbedOptions {
 		value: string;
 		inline?: boolean;
 	}[];
+	author?: {
+		name: string;
+		iconUrl: string;
+		url?: string;
+	};
 }

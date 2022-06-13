@@ -8,8 +8,10 @@
 		"sourceMap": true,
 		"esModuleInterop": true,
 		"lib": ["es2015", "dom"],
-		"rootDir": "src"
+		"rootDir": "src",
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true
 	},
-	"include": ["src"],
+	"include": ["src/**/*"],
 	"exclude": ["node_modules", "dist"]
 }
