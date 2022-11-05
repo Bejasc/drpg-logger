@@ -1,4 +1,4 @@
-export default interface IEmbedOptions {
+export interface IEmbedOptions {
 	thumbnail?: string;
 	image?: string;
 	fields?: {

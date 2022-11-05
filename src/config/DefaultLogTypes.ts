@@ -1,5 +1,5 @@
-import { DrpgColors } from "@drpgdev/drpg-utils";
 import { bgRed, cyan, gray, magenta, red, yellow } from "colorette";
+import { DrpgColors } from "drpg-utils";
 import { ILogType } from "../types/ILogType";
 
 export const LogLevel = {

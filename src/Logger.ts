@@ -2,8 +2,8 @@ import { Client, Message, MessageEmbed, TextChannel } from "discord.js";
 import { LogLevel } from "./config/DefaultLogTypes";
 import getLogEmbed from "./functions/getLogEmbed";
 import logToConsole from "./functions/logToConsole";
-import IEmbedOptions from "./types/IEmbedOptions";
-import ILoggerOptions from "./types/ILoggerOptions";
+import { IEmbedOptions } from "./types/IEmbedOptions";
+import { ILoggerOptions } from "./types/ILoggerOptions";
 import { ILogType } from "./types/ILogType";
 
 export abstract class Logger {

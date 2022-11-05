@@ -1,8 +1,9 @@
 import { bold, greenBright, cyan, yellow } from "colorette";
 import { Client, TextChannel } from "discord.js";
 import moment from "moment";
-import ILoggerOptions from "../types/ILoggerOptions";
+import { ILoggerOptions } from "../types";
 import { ILogType } from "../types/ILogType";
+/**@internal */
 
 export default function ({ type, content, title, options }: { type: ILogType; content: string; title?: string; options: ILoggerOptions }): void {
 	if (options.client) {

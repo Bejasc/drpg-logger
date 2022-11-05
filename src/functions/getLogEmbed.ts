@@ -1,8 +1,8 @@
 import { Message, MessageEmbed, ColorResolvable } from "discord.js";
 import AnsiParser from "ansi-parser";
 import { ILogType } from "../types/ILogType";
-import IEmbedOptions from "../types/IEmbedOptions";
 import { Logger } from "../Logger";
+import { IEmbedOptions } from "..";
 
 export default function (type: ILogType, title: string, content: string, message: Message, embedOptions: IEmbedOptions): MessageEmbed {
 	const embed = new MessageEmbed();
