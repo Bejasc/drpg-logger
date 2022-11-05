@@ -18,8 +18,6 @@ export abstract class Logger {
 	public static setOptions(o: ILoggerOptions) {
 		this.options = o;
 
-		console.log(o.client.user.username ?? "fuqknows");
-
 		if (o.allowEmbedLevel == undefined) this.options.allowEmbedLevel = 30;
 		if (o.allowLogLevel == undefined) this.options.allowLogLevel = 10;
 		if (o.dateDisplayTimezone == undefined) this.options.dateDisplayTimezone = "0";
