@@ -16,9 +16,9 @@ export default function ({ type, content, title, options }: { type: ILogType; co
 
 	if (title) content = bold(title + ": ") + content;
 
-	content = (type.logTag ?? `${greenBright("%T")} - ${greenBright("CUSTOM")}`) + " - " + content;
-
-	content = content.replace("%T", getTimestamp(options));
+	//content = (type.logTag ?? `${greenBright("%T")} - ${greenBright("CUSTOM")}`) + " - " + content;
+	content = `%T - ${colorizeText(type.logTag, type.consoleColor)} - ${content}`;
+	content = content.replace("%T", colorizeText(getTimestamp(options), type.consoleColor));
 
 	const method = type.method ?? "log";
 	console[method](content);
