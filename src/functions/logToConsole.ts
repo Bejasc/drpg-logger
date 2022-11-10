@@ -1,11 +1,14 @@
-import { bold, greenBright, cyan, yellow } from "colorette";
+import { bold, cyan, yellow } from "colorette";
 import { Client, TextChannel } from "discord.js";
 import moment from "moment";
 import { ILoggerOptions } from "../types";
 import { ILogType } from "../types/ILogType";
+import { colorizeText, ConsoleColorMode } from "./coloretteResolver";
 /**@internal */
 
 export default function ({ type, content, title, options }: { type: ILogType; content: string; title?: string; options: ILoggerOptions }): void {
+	if (type.consoleColorMode == ConsoleColorMode.Full) content = colorizeText(content, type.consoleColor);
+
 	if (options.client) {
 		content = parseMentions(content, options.client);
 		content = parseChannels(content, options.client);
@@ -13,9 +16,9 @@ export default function ({ type, content, title, options }: { type: ILogType; co
 
 	if (title) content = bold(title + ": ") + content;
 
-	content = (type.logTag ?? `${greenBright("%T")} - ${greenBright("CUSTOM")}`) + " - " + content;
-
-	content = content.replace("%T", getTimestamp(options));
+	//content = (type.logTag ?? `${greenBright("%T")} - ${greenBright("CUSTOM")}`) + " - " + content;
+	content = `%T - ${colorizeText(type.logTag, type.consoleColor)} - ${content}`;
+	content = content.replace("%T", colorizeText(getTimestamp(options), type.consoleColor));
 
 	const method = type.method ?? "log";
 	console[method](content);
