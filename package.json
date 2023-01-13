@@ -30,7 +30,7 @@
 		"colorette": "^2.0.16",
 		"discord.js": "^13.6.0",
 		"drpg-utils": "^1.3.2",
-		"moment": "^2.29.3",
+		"moment": "^2.29.4",
 		"typescript": "^4.6.3"
 	},
 	"lint-staged": {
