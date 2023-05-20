@@ -1,6 +1,6 @@
 {
 	"name": "drpg-logger",
-	"version": "0.0.0-dev",
+	"version": "2.0.1",
 	"author": "Bejasc",
 	"repository": {
 		"type": "git",
@@ -29,7 +29,7 @@
 		"ansi-parser": "^3.2.10",
 		"colorette": "^2.0.20",
 		"discord.js": "^14.11.0",
-		"drpg-utils": "^1.3.4",
+		"drpg-utils": "^2.0.0",
 		"moment": "^2.29.4",
 		"typescript": "^5.0.4"
 	},
