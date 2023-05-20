@@ -1,11 +1,11 @@
-import { Message, MessageEmbed, ColorResolvable } from "discord.js";
+import { Message, EmbedBuilder, ColorResolvable } from "discord.js";
 import AnsiParser from "ansi-parser";
 import { ILogType } from "../types/ILogType";
 import { Logger } from "../Logger";
 import { IEmbedOptions } from "..";
 
-export default function (type: ILogType, title: string, content: string, message: Message, embedOptions: IEmbedOptions): MessageEmbed {
-	const embed = new MessageEmbed();
+export default function (type: ILogType, title: string, content: string, message: Message, embedOptions: IEmbedOptions): EmbedBuilder {
+	const embed = new EmbedBuilder();
 
 	if (!title) title = "";
 	if (type.title) title = `${type.title} - ${title}`;

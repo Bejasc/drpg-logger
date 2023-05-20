@@ -1,4 +1,4 @@
-import { Client, Message, MessageEmbed, TextChannel } from "discord.js";
+import { Client, Message, EmbedBuilder, TextChannel } from "discord.js";
 import { LogLevel } from "./config/DefaultLogTypes";
 import getLogEmbed from "./functions/getLogEmbed";
 import logToConsole from "./functions/logToConsole";
@@ -32,7 +32,7 @@ export abstract class Logger {
 	 * @param message The message, if any. The Embed will offer a link to this message for navigation
 	 * @returns The message embed that was sent.
 	 */
-	public static trace(content: string, title?: string, message?: Message, embedOptions?: IEmbedOptions): MessageEmbed {
+	public static trace(content: string, title?: string, message?: Message, embedOptions?: IEmbedOptions): EmbedBuilder {
 		return Logger.log(LogLevel.Trace, content, title, message, embedOptions);
 	}
 
@@ -43,7 +43,7 @@ export abstract class Logger {
 	 * @param message The message, if any. The Embed will offer a link to this message for navigation
 	 * @returns The message embed that was sent.
 	 */
-	public static debug(content: string, title?: string, message?: Message, embedOptions?: IEmbedOptions): MessageEmbed {
+	public static debug(content: string, title?: string, message?: Message, embedOptions?: IEmbedOptions): EmbedBuilder {
 		return Logger.log(LogLevel.Debug, content, title, message, embedOptions);
 	}
 
@@ -54,7 +54,7 @@ export abstract class Logger {
 	 * @param message The message, if any. The Embed will offer a link to this message for navigation
 	 * @returns The message embed that was sent.
 	 */
-	public static info(content: string, title?: string, message?: Message, embedOptions?: IEmbedOptions): MessageEmbed {
+	public static info(content: string, title?: string, message?: Message, embedOptions?: IEmbedOptions): EmbedBuilder {
 		return Logger.log(LogLevel.Info, content, title, message, embedOptions);
 	}
 
@@ -65,7 +65,7 @@ export abstract class Logger {
 	 * @param message The message, if any. The Embed will offer a link to this message for navigation
 	 * @returns The message embed that was sent.
 	 */
-	public static warn(content: string, title?: string, message?: Message, embedOptions?: IEmbedOptions): MessageEmbed {
+	public static warn(content: string, title?: string, message?: Message, embedOptions?: IEmbedOptions): EmbedBuilder {
 		return Logger.log(LogLevel.Warn, content, title, message, embedOptions);
 	}
 
@@ -76,7 +76,7 @@ export abstract class Logger {
 	 * @param message The message, if any. The Embed will offer a link to this message for navigation
 	 * @returns The message embed that was sent.
 	 */
-	public static error(content: string, title?: string, message?: Message, embedOptions?: IEmbedOptions): MessageEmbed {
+	public static error(content: string, title?: string, message?: Message, embedOptions?: IEmbedOptions): EmbedBuilder {
 		return Logger.log(LogLevel.Error, content, title, message, embedOptions);
 	}
 
@@ -87,7 +87,7 @@ export abstract class Logger {
 	 * @param message The message, if any. The Embed will offer a link to this message for navigation
 	 * @returns The message embed that was sent.
 	 */
-	public static fatal(content: string, title?: string, message?: Message, embedOptions?: IEmbedOptions): MessageEmbed {
+	public static fatal(content: string, title?: string, message?: Message, embedOptions?: IEmbedOptions): EmbedBuilder {
 		return Logger.log(LogLevel.Fatal, content, title, message, embedOptions);
 	}
 
@@ -99,7 +99,7 @@ export abstract class Logger {
 	 * @param message The message, if any. The Embed will offer a link to this message for navigation
 	 * @returns The message embed that was sent.
 	 */
-	public static custom(logLevel: ILogType, content: string, title?: string, message?: Message, embedOptions?: IEmbedOptions): MessageEmbed {
+	public static custom(logLevel: ILogType, content: string, title?: string, message?: Message, embedOptions?: IEmbedOptions): EmbedBuilder {
 		const embed = Logger.log(logLevel, content, title, message, embedOptions);
 		return embed;
 	}
@@ -115,13 +115,13 @@ export abstract class Logger {
 	public static async respond(logLevel: ILogType, content: string, title: string, message: Message, embedOptions?: IEmbedOptions): Promise<Message> {
 		const embed = Logger.log(logLevel, content, title, message, embedOptions);
 
-		embed.footer = null;
-		embed.fields = null;
+		embed.setFooter(null);
+		embed.setFields(null);
 
 		return message.reply({ embeds: [embed] });
 	}
 
-	static log(type: ILogType, content: string, title?: string, message?: Message, embedOptions?: IEmbedOptions): MessageEmbed {
+	static log(type: ILogType, content: string, title?: string, message?: Message, embedOptions?: IEmbedOptions): EmbedBuilder {
 		try {
 			const consoleLogLevel = Logger.options.allowLogLevel;
 			if (type.priority >= consoleLogLevel) logToConsole({ type, content, title, options: Logger.options });
@@ -140,7 +140,7 @@ export abstract class Logger {
 
 					if (message) {
 						const logUrl = message.url;
-						logEmbed.addField("\u200b", `[Go to](${logUrl})`);
+						logEmbed.addFields({name:"\u200b", value:`[Go to](${logUrl})`});
 					}
 
 					if (Logger.options.includeFooterOnRespond)
