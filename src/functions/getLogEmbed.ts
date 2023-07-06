@@ -12,9 +12,12 @@ export default function (type: ILogType, title: string, content: string, message
 	if (type.emoji) title = `${type.emoji} ${title}`;
 
 	embed.setTitle(title);
-	content = AnsiParser.removeAnsi(content);
+	try{
+		content = AnsiParser.removeAnsi(content);
+	} catch(err){
+		//TypeError: input.replace is not a function    at Object.AnsiParser.removeAnsi (F:\Discord Bots\swrpg-bot-v2\node_modules\ansi-parser\lib\index.js:157:18)
+	}
 	if(content.length <=4000){
-
 		embed.setDescription(content);
 	} else {
 		embed.setDescription(`${content.substring(0,3500)}\n\n.... **Clipped due to length**`)
