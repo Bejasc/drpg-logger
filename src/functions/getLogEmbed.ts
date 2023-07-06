@@ -12,7 +12,13 @@ export default function (type: ILogType, title: string, content: string, message
 	if (type.emoji) title = `${type.emoji} ${title}`;
 
 	embed.setTitle(title);
-	embed.setDescription(AnsiParser.removeAnsi(content));
+	content = AnsiParser.removeAnsi(content);
+	if(content.length <=4000){
+
+		embed.setDescription(content);
+	} else {
+		embed.setDescription(`${content}\n\n.... **Clipped due to length**`)
+	}
 	if (type.thumbnail) embed.setThumbnail(type.thumbnail);
 
 	const color = type.embedColor;
