@@ -17,7 +17,7 @@ export default function (type: ILogType, title: string, content: string, message
 
 		embed.setDescription(content);
 	} else {
-		embed.setDescription(`${content}\n\n.... **Clipped due to length**`)
+		embed.setDescription(`${content.substring(0,3500)}\n\n.... **Clipped due to length**`)
 	}
 	if (type.thumbnail) embed.setThumbnail(type.thumbnail);
 
